@@ -16,7 +16,6 @@ var barcodeDetector = new BarcodeDetector({
         // 'pdf417',
         // 'qr_code',
         'upc_a',
-        "upc_e"
         // 'upc_e'
     ]
 });
@@ -24,14 +23,9 @@ var barcodeDetector = new BarcodeDetector({
 let updateBarcodes = async () => {
     try {
         console.log('detecting barcodes');
-        // let canvas = document.createElement('canvas');
-        // let context = canvas.getContext('2d');
-        // canvas.width = video.videoWidth;
-        // canvas.height = video.videoHeight;
-        // context.drawImage(video, 0, 0);
-        // let blob = await new Promise(resolve => canvas.toBlob(resolve));
 
         let barcodes = await barcodeDetector.detect(video);
+
         console.log({barcodes});
         if (barcodes.length) {
             barcodeText.innerText = barcodes[0].rawValue;
