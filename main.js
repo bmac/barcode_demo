@@ -20,6 +20,10 @@ var barcodeDetector = new BarcodeDetector({
     ]
 });
 
+// This method will be called every 1/2 second to try to read a bar
+// code out of the video element. We will make the source for the
+// video elment a getUserMedia stream which has access to the user's
+// camera.
 let updateBarcodes = async () => {
     try {
         console.log('detecting barcodes');
@@ -36,10 +40,8 @@ let updateBarcodes = async () => {
     setTimeout(updateBarcodes, 500);
 };
 
-video.onloadedmetadata = () => {
-    video.play();
-    updateBarcodes();
-};
+// Wait for the user to click the "Request Camera Permission" so we
+// don't ask for permission on page load.
 
 form.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -47,12 +49,21 @@ form.addEventListener('submit', (event) => {
     navigator.mediaDevices.getUserMedia({
         audio: false,
         video: {
+            // This requests the camera facing away from the user.
             facingMode: 'environment',
             width: 640,
             height: 640,
         }
     }).then(mediaStream => {
-        window.mediaStream = mediaStream;
+        // Once the user media stream is loaded into the video
+        // element, start trying to read barcodes from the video
+        // element.
+        video.onloadedmetadata = () => {
+            video.play();
+            updateBarcodes();
+        };
+
+        // Use the userMediaStream as the source for the video element.
         video.srcObject = mediaStream;
     });
 });
