@@ -42,7 +42,6 @@ let updateBarcodes = async () => {
 
 // Wait for the user to click the "Request Camera Permission" so we
 // don't ask for permission on page load.
-
 form.addEventListener('submit', (event) => {
     event.preventDefault();
 
